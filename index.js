@@ -11,7 +11,7 @@ function Ora(options) {
 		stream: process.stderr
 	}, options);
 
-	var sp = options.spinner;
+	var sp = this.options.spinner;
 	this.spinner = typeof sp === 'object' ? sp : (process.platform === 'win32' ? cliSpinners.line : (cliSpinners[sp] || cliSpinners.dots)); // eslint-disable-line
 
 	if (this.spinner.frames === undefined) {
