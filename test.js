@@ -24,6 +24,19 @@ test.before(() => {
 	process.stderr.cursorTo = function () {};
 });
 
+test('`.id` is not set when created', t => {
+	const spinner = new Ora('foo');
+	t.notOk(spinner.id);
+});
+
+test('ignore consecutive calls to `.start()`', t => {
+	const spinner = new Ora('foo');
+	spinner.start();
+	const id = spinner.id;
+	spinner.start();
+	t.is(id, spinner.id);
+});
+
 test(t => {
 	t.plan(1);
 
