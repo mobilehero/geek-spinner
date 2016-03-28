@@ -24,20 +24,7 @@ test.before(() => {
 	process.stderr.cursorTo = function () {};
 });
 
-test('`.id` is not set when created', t => {
-	const spinner = new Ora('foo');
-	t.notOk(spinner.id);
-});
-
-test('ignore consecutive calls to `.start()`', t => {
-	const spinner = new Ora('foo');
-	spinner.start();
-	const id = spinner.id;
-	spinner.start();
-	t.is(id, spinner.id);
-});
-
-test(t => {
+test('main', t => {
 	t.plan(1);
 
 	const spinner = new Ora({text: 'foo', color: false});
@@ -49,7 +36,7 @@ test(t => {
 	});
 });
 
-test(t => {
+test('title shortcut', t => {
 	t.plan(1);
 
 	const ora = Ora;
@@ -61,4 +48,17 @@ test(t => {
 	readOutput(spinner, (output) => {
 		t.is(output, '⠋ foo');
 	});
+});
+
+test('`.id` is not set when created', t => {
+	const spinner = new Ora('foo');
+	t.notOk(spinner.id);
+});
+
+test('ignore consecutive calls to `.start()`', t => {
+	const spinner = new Ora('foo');
+	spinner.start();
+	const id = spinner.id;
+	spinner.start();
+	t.is(id, spinner.id);
 });
