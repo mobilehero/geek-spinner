@@ -52,7 +52,7 @@ test('title shortcut', t => {
 
 test('`.id` is not set when created', t => {
 	const spinner = new Ora('foo');
-	t.notOk(spinner.id);
+	t.falsy(spinner.id);
 });
 
 test('ignore consecutive calls to `.start()`', t => {
