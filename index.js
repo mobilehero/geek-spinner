@@ -52,7 +52,7 @@ Ora.prototype.frame = function () {
 
 Ora.prototype.clear = function () {
 	if (!this.enabled) {
-		return;
+		return this;
 	}
 
 	this.stream.clearLine();
@@ -70,7 +70,7 @@ Ora.prototype.render = function () {
 
 Ora.prototype.start = function () {
 	if (!this.enabled || this.id) {
-		return;
+		return this;
 	}
 
 	cliCursor.hide();
@@ -82,7 +82,7 @@ Ora.prototype.start = function () {
 
 Ora.prototype.stop = function () {
 	if (!this.enabled) {
-		return;
+		return this;
 	}
 
 	clearInterval(this.id);
