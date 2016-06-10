@@ -127,6 +127,7 @@ Change the spinner color.
 ## Related
 
 - [cli-spinners](https://github.com/sindresorhus/cli-spinners) - Spinners for use in the terminal
+- [listr](https://github.com/SamVerschueren/listr) - Terminal task list
 
 
 ## License
