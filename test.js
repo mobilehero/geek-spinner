@@ -35,7 +35,7 @@ test('main', t => {
 		enabled: true
 	});
 
-	readOutput(spinner, (output) => {
+	readOutput(spinner, output => {
 		t.is(output, `${spinnerChar} foo`);
 	});
 });
@@ -49,7 +49,7 @@ test('title shortcut', t => {
 	spinner.color = false;
 	spinner.enabled = true;
 
-	readOutput(spinner, (output) => {
+	readOutput(spinner, output => {
 		t.is(output, `${spinnerChar} foo`);
 	});
 });

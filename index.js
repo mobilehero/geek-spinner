@@ -22,7 +22,7 @@ function Ora(options) {
 	}, options);
 
 	var sp = this.options.spinner;
-	this.spinner = typeof sp === 'object' ? sp : (process.platform === 'win32' ? cliSpinners.line : (cliSpinners[sp] || cliSpinners.dots)); // eslint-disable-line
+	this.spinner = typeof sp === 'object' ? sp : (process.platform === 'win32' ? cliSpinners.line : (cliSpinners[sp] || cliSpinners.dots)); // eslint-disable-line no-nested-ternary
 
 	if (this.spinner.frames === undefined) {
 		throw new Error('Spinner must define `frames`');
