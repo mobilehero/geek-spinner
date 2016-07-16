@@ -10,7 +10,7 @@
     "url": "sindresorhus.com"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=4"
   },
   "scripts": {
     "test": "xo && ava"
@@ -37,12 +37,14 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "cli-cursor": "^1.0.2",
-    "cli-spinners": "^0.1.2",
-    "object-assign": "^4.0.1"
+    "cli-spinners": "^0.1.2"
   },
   "devDependencies": {
     "ava": "*",
     "get-stream": "^2.3.0",
     "xo": "*"
+  },
+  "xo": {
+    "esnext": true
   }
 }
