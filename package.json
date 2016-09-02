@@ -1,14 +1,20 @@
 {
-  "name": "ora",
+  "name": "@geek/spinner",
   "version": "0.3.0",
-  "description": "Elegant terminal spinner",
+  "description": "cli spinner - fork of sindresorhus/ora ",
   "license": "MIT",
-  "repository": "sindresorhus/ora",
+  "repository": "mobilehero/geek-spinner",
   "author": {
     "name": "Sindre Sorhus",
     "email": "sindresorhus@gmail.com",
     "url": "sindresorhus.com"
   },
+  "contributors": [
+  {
+    "name": "Brenton House",
+    "email": "brenton.house@gmail.com",
+    "url": "https://github.com/brentonhouse"
+  }],
   "engines": {
     "node": ">=4"
   },
