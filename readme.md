@@ -4,6 +4,12 @@
 
 <img src="screenshot.gif" width="629">
 
+## Modifications
+
+This has been modified from the original version.  The following changes have been made:
+
+- Added column property
+- Added optional text parameter to several functions
 
 ## Install
 
@@ -95,23 +101,23 @@ Force enabling of the spinner regardless of the `stream` not being run inside a 
 
 ### Instance
 
-#### .start()
+#### .start([text])
 
 Start the spinner. Returns the instance.
 
-#### .stop()
+#### .stop([text])
 
 Stop and clear the spinner. Returns the instance.
 
-### .succeed()
+### .succeed([text])
 
 Stop the spinner, change it to a green `✔` and persist the `text`. Returns the instance. See the GIF below.
 
-### .fail()
+### .fail([text])
 
 Stop the spinner, change it to a red `✖` and persist the `text`. Returns the instance. See the GIF below.
 
-### .stopAndPersist([symbol])
+### .stopAndPersist([symbol], [text])
 
 Stop the spinner, change it to `symbol` (or `' '` if `symbol` is not provided) and persist the `text`. Returns the instance. See the GIF below.
 

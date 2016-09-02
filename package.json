@@ -1,7 +1,7 @@
 {
   "name": "@geek/spinner",
-  "version": "0.3.0",
-  "description": "cli spinner - fork of sindresorhus/ora ",
+  "version": "0.3.1-revision.1",
+  "description": "terminal spinner - fork of sindresorhus/ora ",
   "license": "MIT",
   "repository": "mobilehero/geek-spinner",
   "author": {
