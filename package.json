@@ -37,12 +37,12 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "cli-cursor": "^1.0.2",
-    "cli-spinners": "^0.2.0",
+    "cli-spinners": "^1.0.0",
     "log-symbols": "^1.0.2"
   },
   "devDependencies": {
     "ava": "*",
-    "get-stream": "^2.3.0",
+    "get-stream": "^3.0.0",
     "xo": "*"
   },
   "xo": {
