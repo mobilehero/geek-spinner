@@ -103,19 +103,22 @@ module.exports = function (opts) {
 	return new Ora(opts);
 };
 
-module.exports.promise = function (action, options) {
+module.exports.promise = (action, options) => {
 	if (typeof action.then !== 'function') {
 		throw new Error('Parameter `action` must be a Promise');
 	}
 
 	const spinner = new Ora(options);
 	spinner.start();
-	action.then(() => {
-		spinner.succeed();
-	},
-	() => {
-		spinner.fail();
-	});
+
+	action.then(
+		() => {
+			spinner.succeed();
+		},
+		() => {
+			spinner.fail();
+		}
+	);
 
 	return spinner;
 };
