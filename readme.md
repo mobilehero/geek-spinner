@@ -8,7 +8,7 @@
 
 This has been modified from the original version.  The following changes have been made:
 
-- Added column property
+- Added indent property
 - Added optional text parameter to several functions
 
 ## Install
@@ -151,9 +151,9 @@ Starts a spinner for a promise. The spinner is stopped with `.succeed()` if the 
 
 Type: `Promise`
 
-#### .column
+#### .indent
 
-Change column position of the spinner.
+Indent the spinner.
 
 ## Related
 
