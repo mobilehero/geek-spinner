@@ -1,4 +1,4 @@
-# ora [![Build Status](https://travis-ci.org/sindresorhus/ora.svg?branch=master)](https://travis-ci.org/sindresorhus/ora)
+# @geek/spinner [![Build Status](https://travis-ci.org/sindresorhus/ora.svg?branch=master)](https://travis-ci.org/sindresorhus/ora)
 
 > Elegant terminal spinner
 
@@ -14,16 +14,16 @@ This has been modified from the original version.  The following changes have be
 ## Install
 
 ```
-$ npm install --save ora
+$ npm install --save @geek/spinner
 ```
 
 
 ## Usage
 
 ```js
-const ora = require('ora');
+const Spinner = require('@geek/spinner');
 
-const spinner = ora('Loading unicorns').start();
+const spinner = Spinner('Loading unicorns').start();
 
 setTimeout(() => {
 	spinner.color = 'yellow';
@@ -36,7 +36,7 @@ setTimeout(() => {
 
 It will gracefully not do anything when there's no TTY or when in a CI.
 
-### ora([options|text])
+### Spinner([options|text])
 
 If a string is provided, it is treated as a shortcut for [`options.text`](#text).
 
@@ -157,6 +157,7 @@ Indent the spinner.
 
 ## Related
 
+- [ora](https://github.com/sindresorhus/ora) - Elegant terminal spinner (upstream for this project)
 - [cli-spinners](https://github.com/sindresorhus/cli-spinners) - Spinners for use in the terminal
 - [listr](https://github.com/SamVerschueren/listr) - Terminal task list
 
