@@ -143,6 +143,14 @@ Change the text.
 
 Change the spinner color.
 
+#### .promise(action, [options|text])
+
+Starts a spinner for a promise. The spinner is stopped with `.succeed()` if the promise fulfills or with `.fail()` if it rejects. Returns the spinner instance.
+
+##### action
+
+Type: `Promise`
+
 #### .column
 
 Change column position of the spinner.
