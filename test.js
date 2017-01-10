@@ -9,7 +9,6 @@ const noop = () => {};
 
 const getPassThroughStream = () => {
 	const stream = new PassThroughStream();
-	stream.isTTY = true;
 	stream.clearLine = noop;
 	stream.cursorTo = noop;
 	return stream;
