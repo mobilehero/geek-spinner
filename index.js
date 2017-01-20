@@ -85,15 +85,25 @@ class Ora {
 
 		return this;
 	}
-	succeed() {
-		return this.stopAndPersist(logSymbols.success);
+	succeed(text) {
+		return this.stopAndPersist({symbol: logSymbols.success, text});
 	}
-	fail() {
-		return this.stopAndPersist(logSymbols.error);
+	fail(text) {
+		return this.stopAndPersist({symbol: logSymbols.error, text});
 	}
-	stopAndPersist(symbol) {
+	stopAndPersist(options) {
+		// Legacy argument
+		// TODO: Deprecate sometime in the future
+		if (typeof options === 'string') {
+			options = {
+				symbol: options
+			};
+		}
+
+		options = options || {};
+
 		this.stop();
-		this.stream.write(`${symbol || ' '} ${this.text}\n`);
+		this.stream.write(`${options.symbol || ' '} ${options.text || this.text}\n`);
 
 		return this;
 	}
