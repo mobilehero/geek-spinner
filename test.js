@@ -2,7 +2,7 @@ import {PassThrough as PassThroughStream} from 'stream';
 import getStream from 'get-stream';
 import test from 'ava';
 import {stripColor} from 'chalk';
-import Ora from './';
+import Ora from '.';
 
 const spinnerChar = process.platform === 'win32' ? '-' : '⠋';
 const noop = () => {};
@@ -95,7 +95,7 @@ test('succeed', async t => {
 	stream.end();
 	const output = await getStream(stream);
 
-	t.regex(stripColor(output), /✔|√ foo/);
+	t.regex(stripColor(output), /(✔|√) foo/);
 });
 
 test('succeed with new text', async t => {
@@ -114,7 +114,7 @@ test('succeed with new text', async t => {
 	stream.end();
 	const output = await getStream(stream);
 
-	t.regex(stripColor(output), /✔|√ fooed/);
+	t.regex(stripColor(output), /(✔|√) fooed/);
 });
 
 test('fail', async t => {
@@ -133,7 +133,7 @@ test('fail', async t => {
 	stream.end();
 	const output = await getStream(stream);
 
-	t.regex(stripColor(output), /✖|× foo/);
+	t.regex(stripColor(output), /(✖|×) foo/);
 });
 
 test('fail with new text', async t => {
@@ -152,7 +152,7 @@ test('fail with new text', async t => {
 	stream.end();
 	const output = await getStream(stream);
 
-	t.regex(stripColor(output), /✖|× failed to foo/);
+	t.regex(stripColor(output), /(✖|×) failed to foo/);
 });
 
 test('stopAndPersist', async t => {

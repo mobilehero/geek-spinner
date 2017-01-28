@@ -36,7 +36,7 @@ If a string is provided, it is treated as a shortcut for [`options.text`](#text)
 
 #### options
 
-Type: `object`
+Type: `Object`
 
 ##### text
 
@@ -46,7 +46,7 @@ Text to display after the spinner.
 
 ##### spinner
 
-Type: `string` `object`<br>
+Type: `string` `Object`<br>
 Default: `dots` <img src="screenshot-spinner.gif" width="14">
 
 Name of one of the [provided spinners](https://github.com/sindresorhus/cli-spinners/blob/master/spinners.json). See `example.js` in this repo if you want to test out different spinners.

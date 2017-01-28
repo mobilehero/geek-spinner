@@ -44,8 +44,5 @@
     "ava": "*",
     "get-stream": "^3.0.0",
     "xo": "*"
-  },
-  "xo": {
-    "esnext": true
   }
 }
