@@ -106,13 +106,17 @@ Stop and clear the spinner. Returns the instance.
 
 Stop the spinner, change it to a green `✔` and persist the current text, or `text` if provided. Returns the instance. See the GIF below.
 
+#### .fail([text])
+
+Stop the spinner, change it to a red `✖` and persist the current text, or `text` if provided. Returns the instance. See the GIF below.
+
 #### .warn([text])
 
 Stop the spinner, change it to a yellow `⚠` and persist the current text, or `text` if provided. Returns the instance.
 
-#### .fail([text])
+#### .info([text])
 
-Stop the spinner, change it to a red `✖` and persist the current text, or `text` if provided. Returns the instance. See the GIF below.
+Stop the spinner, change it to a blue `ℹ` and persist the current text, or `text` if provided. Returns the instance.
 
 #### .stopAndPersist([options])
 

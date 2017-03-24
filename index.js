@@ -88,11 +88,14 @@ class Ora {
 	succeed(text) {
 		return this.stopAndPersist({symbol: logSymbols.success, text});
 	}
+	fail(text) {
+		return this.stopAndPersist({symbol: logSymbols.error, text});
+	}
 	warn(text) {
 		return this.stopAndPersist({symbol: logSymbols.warning, text});
 	}
-	fail(text) {
-		return this.stopAndPersist({symbol: logSymbols.error, text});
+	info(text) {
+		return this.stopAndPersist({symbol: logSymbols.info, text});
 	}
 	stopAndPersist(options) {
 		// Legacy argument
