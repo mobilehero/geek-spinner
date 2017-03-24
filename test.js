@@ -271,6 +271,7 @@ test('stopAndPersist with new symbol and text', async t => {
 
 test('promise resolves', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 	const resolves = Promise.resolve(1);
 
 	Ora.promise(resolves, {
@@ -281,16 +282,15 @@ test('promise resolves', async t => {
 	});
 
 	await resolves;
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(output, /(✔|√) foo/);
+	t.regex(stripColor(await output), /(✔|√) foo/);
 });
 
 test('promise rejects', async t => {
 	const stream = getPassThroughStream();
-	const rejects = Promise.reject(1);
+	const rejects = Promise.reject(new Error());
+	const output = getStream(stream);
 
 	Ora.promise(rejects, {
 		stream,
@@ -304,6 +304,6 @@ test('promise rejects', async t => {
 	} catch (err) {}
 
 	stream.end();
-	const output = await getStream(stream);
-	t.regex(output, /(✖|×) foo/);
+
+	t.regex(stripColor(await output), /(✖|×) foo/);
 });
