@@ -118,7 +118,7 @@ module.exports = function (opts) {
 
 module.exports.promise = (action, options) => {
 	if (typeof action.then !== 'function') {
-		throw new Error('Parameter `action` must be a Promise');
+		throw new TypeError('Parameter `action` must be a Promise');
 	}
 
 	const spinner = new Ora(options);

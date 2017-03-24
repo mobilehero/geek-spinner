@@ -1,7 +1,7 @@
 import {PassThrough as PassThroughStream} from 'stream';
 import getStream from 'get-stream';
 import test from 'ava';
-import {stripColor} from 'chalk';
+import stripAnsi from 'strip-ansi';
 import Ora from '.';
 
 const spinnerChar = process.platform === 'win32' ? '-' : '⠋';
@@ -15,9 +15,8 @@ const getPassThroughStream = () => {
 };
 
 test('main', async t => {
-	t.plan(1);
-
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -28,31 +27,26 @@ test('main', async t => {
 
 	spinner.start();
 	spinner.stop();
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.is(output, `${spinnerChar} foo`);
+	t.is(await output, `${spinnerChar} foo`);
 });
 
 test('title shortcut', async t => {
-	t.plan(1);
-
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 	const ora = Ora;
+
 	const spinner = ora('foo');
 	spinner.stream = stream;
-
 	spinner.color = false;
 	spinner.enabled = true;
-
 	spinner.start();
 	spinner.stop();
 
 	stream.end();
-	const output = await getStream(stream);
 
-	t.is(output, `${spinnerChar} foo`);
+	t.is(await output, `${spinnerChar} foo`);
 });
 
 test('`.id` is not set when created', t => {
@@ -81,6 +75,7 @@ test('chain call to `.start()` with constructor', t => {
 
 test('succeed', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -91,15 +86,14 @@ test('succeed', async t => {
 
 	spinner.start();
 	spinner.succeed();
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(stripColor(output), /(✔|√) foo/);
+	t.regex(stripAnsi(await output), /(✔|√) foo/);
 });
 
 test('succeed with new text', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -110,15 +104,14 @@ test('succeed with new text', async t => {
 
 	spinner.start();
 	spinner.succeed('fooed');
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(stripColor(output), /(✔|√) fooed/);
+	t.regex(stripAnsi(await output), /(✔|√) fooed/);
 });
 
 test('warn', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -129,15 +122,14 @@ test('warn', async t => {
 
 	spinner.start();
 	spinner.warn();
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(stripColor(output), /⚠ foo/);
+	t.regex(stripAnsi(await output), /⚠ foo/);
 });
 
 test('warn with new text', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -148,15 +140,14 @@ test('warn with new text', async t => {
 
 	spinner.start();
 	spinner.warn('fooed');
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(stripColor(output), /⚠ fooed/);
+	t.regex(stripAnsi(await output), /⚠ fooed/);
 });
 
 test('fail', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -167,15 +158,14 @@ test('fail', async t => {
 
 	spinner.start();
 	spinner.fail();
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(stripColor(output), /(✖|×) foo/);
+	t.regex(stripAnsi(await output), /(✖|×) foo/);
 });
 
 test('fail with new text', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -186,15 +176,14 @@ test('fail with new text', async t => {
 
 	spinner.start();
 	spinner.fail('failed to foo');
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(stripColor(output), /(✖|×) failed to foo/);
+	t.regex(stripAnsi(await output), /(✖|×) failed to foo/);
 });
 
 test('stopAndPersist', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -205,15 +194,14 @@ test('stopAndPersist', async t => {
 
 	spinner.start();
 	spinner.stopAndPersist('@');
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(output, /@ foo/);
+	t.regex(await output, /@ foo/);
 });
 
 test('stopAndPersist with no argument', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -224,15 +212,14 @@ test('stopAndPersist with no argument', async t => {
 
 	spinner.start();
 	spinner.stopAndPersist(' ');
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(output, /\s foo/);
+	t.regex(await output, /\s foo/);
 });
 
 test('stopAndPersist with new text', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -243,15 +230,14 @@ test('stopAndPersist with new text', async t => {
 
 	spinner.start();
 	spinner.stopAndPersist({text: 'all done'});
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(output, /\s all done/);
+	t.regex(await output, /\s all done/);
 });
 
 test('stopAndPersist with new symbol and text', async t => {
 	const stream = getPassThroughStream();
+	const output = getStream(stream);
 
 	const spinner = new Ora({
 		stream,
@@ -262,11 +248,9 @@ test('stopAndPersist with new symbol and text', async t => {
 
 	spinner.start();
 	spinner.stopAndPersist({symbol: '@', text: 'all done'});
-
 	stream.end();
-	const output = await getStream(stream);
 
-	t.regex(output, /@ all done/);
+	t.regex(await output, /@ all done/);
 });
 
 test('promise resolves', async t => {
@@ -284,13 +268,13 @@ test('promise resolves', async t => {
 	await resolves;
 	stream.end();
 
-	t.regex(stripColor(await output), /(✔|√) foo/);
+	t.regex(stripAnsi(await output), /(✔|√) foo/);
 });
 
 test('promise rejects', async t => {
 	const stream = getPassThroughStream();
-	const rejects = Promise.reject(new Error());
 	const output = getStream(stream);
+	const rejects = Promise.reject(new Error());
 
 	Ora.promise(rejects, {
 		stream,
@@ -305,5 +289,5 @@ test('promise rejects', async t => {
 
 	stream.end();
 
-	t.regex(stripColor(await output), /(✖|×) foo/);
+	t.regex(stripAnsi(await output), /(✖|×) foo/);
 });
