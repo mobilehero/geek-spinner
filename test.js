@@ -14,7 +14,7 @@ const getPassThroughStream = () => {
 	return stream;
 };
 
-test('main', async t => {
+const doSpinner = async fn => {
 	const stream = getPassThroughStream();
 	const output = getStream(stream);
 
@@ -26,11 +26,19 @@ test('main', async t => {
 	});
 
 	spinner.start();
-	spinner.stop();
+	fn(spinner);
 	stream.end();
 
-	t.is(await output, `${spinnerChar} foo`);
-});
+	return stripAnsi(await output);
+};
+
+const macro = async (t, fn, expected) => {
+	t.regex(await doSpinner(fn), expected);
+};
+
+test('main', macro, spinner => {
+	spinner.stop();
+}, new RegExp(`${spinnerChar} foo`));
 
 test('title shortcut', async t => {
 	const stream = getPassThroughStream();
@@ -73,205 +81,47 @@ test('chain call to `.start()` with constructor', t => {
 	t.true(spinner.enabled);
 });
 
-test('succeed', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
+test('.succeed()', macro, spinner => {
 	spinner.succeed();
-	stream.end();
+}, /(✔|√) foo/);
 
-	t.regex(stripAnsi(await output), /(✔|√) foo/);
-});
-
-test('succeed with new text', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
+test('.succeed() - with new text', macro, spinner => {
 	spinner.succeed('fooed');
-	stream.end();
+}, /(✔|√) fooed/);
 
-	t.regex(stripAnsi(await output), /(✔|√) fooed/);
-});
-
-test('fail', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
+test('.fail()', macro, spinner => {
 	spinner.fail();
-	stream.end();
+}, /(✖|×) foo/);
 
-	t.regex(stripAnsi(await output), /(✖|×) foo/);
-});
-
-test('fail with new text', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
+test('.fail() - with new text', macro, spinner => {
 	spinner.fail('failed to foo');
-	stream.end();
+}, /(✖|×) failed to foo/);
 
-	t.regex(stripAnsi(await output), /(✖|×) failed to foo/);
-});
-
-test('warn', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
+test('.warn()', macro, spinner => {
 	spinner.warn();
-	stream.end();
+}, /(⚠|‼) foo/);
 
-	t.regex(stripAnsi(await output), /⚠ foo/);
-});
-
-test('warn with new text', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
-	spinner.warn('fooed');
-	stream.end();
-
-	t.regex(stripAnsi(await output), /⚠ fooed/);
-});
-
-test('info', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
+test('.info()', macro, spinner => {
 	spinner.info();
-	stream.end();
+}, /(ℹ|i) foo/);
 
-	t.regex(stripAnsi(await output), /(ℹ|i) foo/);
-});
-
-test('stopAndPersist', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
+test('.stopAndPersist()', macro, spinner => {
 	spinner.stopAndPersist('@');
-	stream.end();
+}, /@ foo/);
 
-	t.regex(await output, /@ foo/);
-});
-
-test('stopAndPersist with no argument', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
+test('.stopAndPersist() - with no argument', macro, spinner => {
 	spinner.stopAndPersist(' ');
-	stream.end();
+}, /\s foo/);
 
-	t.regex(await output, /\s foo/);
-});
-
-test('stopAndPersist with new text', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
+test('.stopAndPersist() - with new text', macro, spinner => {
 	spinner.stopAndPersist({text: 'all done'});
-	stream.end();
+}, /\s all done/);
 
-	t.regex(await output, /\s all done/);
-});
-
-test('stopAndPersist with new symbol and text', async t => {
-	const stream = getPassThroughStream();
-	const output = getStream(stream);
-
-	const spinner = new Ora({
-		stream,
-		text: 'foo',
-		color: false,
-		enabled: true
-	});
-
-	spinner.start();
+test('.stopAndPersist() - with new symbol and text', macro, spinner => {
 	spinner.stopAndPersist({symbol: '@', text: 'all done'});
-	stream.end();
+}, /@ all done/);
 
-	t.regex(await output, /@ all done/);
-});
-
-test('promise resolves', async t => {
+test('.promise() - resolves', async t => {
 	const stream = getPassThroughStream();
 	const output = getStream(stream);
 	const resolves = Promise.resolve(1);
@@ -289,7 +139,7 @@ test('promise resolves', async t => {
 	t.regex(stripAnsi(await output), /(✔|√) foo/);
 });
 
-test('promise rejects', async t => {
+test('.promise() - rejects', async t => {
 	const stream = getPassThroughStream();
 	const output = getStream(stream);
 	const rejects = Promise.reject(new Error());
