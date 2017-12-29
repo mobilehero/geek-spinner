@@ -2,7 +2,9 @@
 
 > Elegant terminal spinner
 
-<img src="screenshot.gif" width="629">
+<p align="center">
+	<img src="https://rawgit.com/sindresorhus/ora/master/screenshot.svg" width="500">
+</p>
 
 
 ## Install
