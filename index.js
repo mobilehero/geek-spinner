@@ -37,7 +37,7 @@ class Ora {
 		this.frameIndex = 0;
 		this.enabled = typeof this.options.enabled === 'boolean' ? this.options.enabled : ((this.stream && this.stream.isTTY) && !process.env.CI);
 
-		// Set *after* this.stream
+		// Set *after* `this.stream`
 		this.text = this.options.text;
 		this.linesToClear = 0;
 	}

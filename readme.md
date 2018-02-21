@@ -10,10 +10,12 @@
 ## Install
 
 ```
-$ npm install --save ora
+$ npm install ora
 ```
 
-*Show your support for Ora by buying this excellent [Node.js course](https://LearnNode.com/friend/AWESOME).*
+<a href="https://www.patreon.com/sindresorhus">
+	<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
+</a>
 
 
 ## Usage
@@ -32,7 +34,7 @@ setTimeout(() => {
 
 ## API
 
-It will gracefully not do anything when there's no TTY or when in a CI.
+It will gracefully not do anything when there's no TTY or when running in a CI.
 
 ### ora([options|text])
 
@@ -73,6 +75,9 @@ Values: `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray`
 Color of the spinner.
 
 ##### hideCursor
+
+Type: `boolean`<br>
+Default: `true`
 
 Set to `false` to stop Ora from hiding the cursor.
 
