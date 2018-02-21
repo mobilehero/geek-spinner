@@ -147,12 +147,9 @@ class Ora {
 			return this;
 		}
 
-		// Legacy argument
-		// TODO: Deprecate sometime in the future
+		// TODO: Remove in the next major version
 		if (typeof options === 'string') {
-			options = {
-				symbol: options
-			};
+			throw new TypeError('This argument now accepts an options object, not a string');
 		}
 
 		options = options || {};

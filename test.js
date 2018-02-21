@@ -106,14 +106,6 @@ test('.info()', macro, spinner => {
 	spinner.info();
 }, /(ℹ|i) foo/);
 
-test('.stopAndPersist()', macro, spinner => {
-	spinner.stopAndPersist('@');
-}, /@ foo/);
-
-test('.stopAndPersist() - with no argument', macro, spinner => {
-	spinner.stopAndPersist(' ');
-}, /\s foo/);
-
 test('.stopAndPersist() - with new text', macro, spinner => {
 	spinner.stopAndPersist({text: 'all done'});
 }, /\s all done/);
