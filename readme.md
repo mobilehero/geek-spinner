@@ -133,6 +133,10 @@ Stop the spinner, change it to a yellow `⚠` and persist the current text, or `
 
 Stop the spinner, change it to a blue `ℹ` and persist the current text, or `text` if provided. Returns the instance.
 
+#### .isSpinning
+
+A boolean of whether the instance is currently spinning.
+
 #### .stopAndPersist([options])
 
 Stop the spinner and change the symbol or text. Returns the instance. See the GIF below.
