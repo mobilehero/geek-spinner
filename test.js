@@ -179,6 +179,7 @@ test('.promise() - rejects', async t => {
 
 test('erases wrapped lines', t => {
 	const stream = getPassThroughStream();
+	stream.isTTY = true;
 	stream.columns = 40;
 	let clearedLines = 0;
 	let cursorAtRow = 0;
