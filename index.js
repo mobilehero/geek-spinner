@@ -72,7 +72,7 @@ class Ora {
 	}
 
 	clear() {
-		if (!this.enabled) {
+		if (!this.enabled || !this.stream.isTTY) {
 			return this;
 		}
 
