@@ -36,8 +36,6 @@ setTimeout(() => {
 
 ## API
 
-It will gracefully not do anything when there's no TTY or when running in a CI.
-
 ### ora([options|text])
 
 If a string is provided, it is treated as a shortcut for [`options.text`](#text).
@@ -106,6 +104,8 @@ You could for example set this to `process.stdout` instead.
 Type: `boolean`
 
 Force enable/disable the spinner. If not specified, the spinner will be enabled if the `stream` is being run inside a TTY context (not spawned or piped) and/or not in a CI environment.
+
+Note that `{enabled: false}` doesn't mean it won't output anything. It just means it won't output the spinner, colors, and other ansi escape codes. It will still log text.
 
 ### Instance
 

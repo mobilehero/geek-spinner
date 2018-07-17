@@ -101,13 +101,19 @@ class Ora {
 			this.text = text;
 		}
 
-		if (!this.enabled || this.isSpinning) {
+		if (!this.enabled) {
+			this.stream.write(`- ${this.text}\n`);
+			return this;
+		}
+
+		if (this.isSpinning) {
 			return this;
 		}
 
 		if (this.hideCursor) {
 			cliCursor.hide(this.stream);
 		}
+
 		this.render();
 		this.id = setInterval(this.render.bind(this), this.interval);
 
@@ -147,10 +153,6 @@ class Ora {
 	}
 
 	stopAndPersist(options = {}) {
-		if (!this.enabled) {
-			return this;
-		}
-
 		this.stop();
 		this.stream.write(`${options.symbol || ' '} ${options.text || this.text}\n`);
 
