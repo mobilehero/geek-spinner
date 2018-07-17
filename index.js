@@ -35,7 +35,7 @@ class Ora {
 		this.stream = this.options.stream;
 		this.id = null;
 		this.frameIndex = 0;
-		this.enabled = typeof this.options.enabled === 'boolean' ? this.options.enabled : ((this.stream && this.stream.isTTY) && !process.env.CI);
+		this.isEnabled = typeof this.options.isEnabled === 'boolean' ? this.options.isEnabled : ((this.stream && this.stream.isTTY) && !process.env.CI);
 
 		// Set *after* `this.stream`
 		this.text = this.options.text;
@@ -72,7 +72,7 @@ class Ora {
 	}
 
 	clear() {
-		if (!this.enabled || !this.stream.isTTY) {
+		if (!this.isEnabled || !this.stream.isTTY) {
 			return this;
 		}
 
@@ -101,7 +101,7 @@ class Ora {
 			this.text = text;
 		}
 
-		if (!this.enabled) {
+		if (!this.isEnabled) {
 			this.stream.write(`- ${this.text}\n`);
 			return this;
 		}
@@ -121,7 +121,7 @@ class Ora {
 	}
 
 	stop() {
-		if (!this.enabled) {
+		if (!this.isEnabled) {
 			return this;
 		}
 

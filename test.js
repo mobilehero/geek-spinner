@@ -23,7 +23,7 @@ const doSpinner = async (fn, extraOptions = {}) => {
 		stream,
 		text: 'foo',
 		color: false,
-		enabled: true,
+		isEnabled: true,
 		...extraOptions
 	});
 
@@ -50,7 +50,7 @@ test('title shortcut', async t => {
 	const spinner = ora('foo');
 	spinner.stream = stream;
 	spinner.color = false;
-	spinner.enabled = true;
+	spinner.isEnabled = true;
 	spinner.start();
 	t.true(spinner.isSpinning);
 	spinner.stop();
@@ -78,11 +78,11 @@ test('chain call to `.start()` with constructor', t => {
 	const spinner = new Ora({
 		stream: getPassThroughStream(),
 		text: 'foo',
-		enabled: true
+		isEnabled: true
 	}).start();
 
 	t.truthy(spinner.id);
-	t.true(spinner.enabled);
+	t.true(spinner.isEnabled);
 });
 
 test('.succeed()', macro, spinner => {
@@ -122,13 +122,13 @@ test('.start(text)', macro, spinner => {
 	spinner.stopAndPersist();
 }, /Test text/);
 
-test('.start() - enabled:false outputs text', macro, spinner => {
+test('.start() - isEnabled:false outputs text', macro, spinner => {
 	spinner.stop();
-}, /- foo/, {enabled: false});
+}, /- foo/, {isEnabled: false});
 
-test('.stopAndPersist() - enabled:false outputs text', macro, spinner => {
+test('.stopAndPersist() - isEnabled:false outputs text', macro, spinner => {
 	spinner.stopAndPersist({symbol: '@', text: 'all done'});
-}, /- foo\n@ all done/, {enabled: false});
+}, /- foo\n@ all done/, {isEnabled: false});
 
 test('.promise() - resolves', async t => {
 	const stream = getPassThroughStream();
@@ -139,7 +139,7 @@ test('.promise() - resolves', async t => {
 		stream,
 		text: 'foo',
 		color: false,
-		enabled: true
+		isEnabled: true
 	});
 
 	await resolves;
@@ -157,7 +157,7 @@ test('.promise() - rejects', async t => {
 		stream,
 		text: 'foo',
 		color: false,
-		enabled: true
+		isEnabled: true
 	});
 
 	try {
@@ -190,7 +190,7 @@ test('erases wrapped lines', t => {
 		stream,
 		text: 'foo',
 		color: false,
-		enabled: true
+		isEnabled: true
 	});
 
 	spinner.render();
