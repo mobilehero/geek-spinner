@@ -162,7 +162,7 @@ test('.promise() - rejects', async t => {
 
 	try {
 		await rejects;
-	} catch (err) {}
+	} catch (_) {}
 
 	stream.end();
 
