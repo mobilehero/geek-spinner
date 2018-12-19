@@ -1,5 +1,5 @@
 'use strict';
-const Ora = require('./');
+const Ora = require('.');
 
 const spinner = new Ora({
 	text: 'Loading unicorns',

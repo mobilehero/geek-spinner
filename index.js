@@ -3,6 +3,10 @@ const chalk = require('chalk');
 const cliCursor = require('cli-cursor');
 const cliSpinners = require('cli-spinners');
 const logSymbols = require('log-symbols');
+const stripAnsi = require('strip-ansi');
+const wcwidth = require('wcwidth');
+
+const TEXT = Symbol('text');
 
 class Ora {
 	constructor(options) {
@@ -25,17 +29,38 @@ class Ora {
 			throw new Error('Spinner must define `frames`');
 		}
 
-		this.text = this.options.text;
 		this.color = this.options.color;
+		this.hideCursor = this.options.hideCursor !== false;
 		this.interval = this.options.interval || this.spinner.interval || 100;
 		this.stream = this.options.stream;
 		this.id = null;
 		this.frameIndex = 0;
 		this.indent = 0;
-		this.enabled = this.options.enabled || ((this.stream && this.stream.isTTY) && !process.env.CI);
+		this.isEnabled = typeof this.options.isEnabled === 'boolean' ? this.options.isEnabled : ((this.stream && this.stream.isTTY) && !process.env.CI);
+
+		this.text = this.options.text;
+		// Set *after* `this.stream`
+		this.linesToClear = 0;
 	}
+
+	get text() {
+		return this[TEXT];
+	}
+
+	get isSpinning() {
+		return this.id !== null;
+	}
+
+	set text(value) {
+		this[TEXT] = value;
+		const columns = this.stream.columns || 80;
+		this.lineCount = stripAnsi('--' + value).split('\n').reduce((count, line) => {
+			return count + Math.max(1, Math.ceil(wcwidth(line) / columns));
+		}, 0);
+	}
+
 	frame() {
-		const frames = this.spinner.frames;
+		const {frames} = this.spinner;
 		let frame = frames[this.frameIndex];
 
 		if (this.color) {
@@ -46,36 +71,60 @@ class Ora {
 
 		return frame + ' ' + this.text;
 	}
+
 	clear() {
-		if (!this.enabled) {
+		if (!this.isEnabled || !this.stream.isTTY) {
 			return this;
 		}
 
-		this.stream.clearLine();
+		for (let i = 0; i < this.linesToClear; i++) {
+			if (i > 0) {
+				this.stream.moveCursor(0, -1);
+			}
+			this.stream.clearLine();
+			this.stream.cursorTo(this.indent);
+		}
+		this.linesToClear = 0;
 		this.stream.cursorTo(this.indent);
 
 		return this;
 	}
+
 	render() {
 		this.clear();
 		this.stream.write(this.frame());
+		this.linesToClear = this.lineCount;
 
 		return this;
 	}
+
 	start(text) {
-		if (!this.enabled || this.id) {
+		if (text) {
+			this.text = text;
+		}
+
+		if (!this.isEnabled) {
+			this.stream.write(`- ${this.text}\n`);
 			return this;
 		}
 
-		cliCursor.hide(this.stream);
+		if (this.isSpinning) {
+			return this;
+		}
+
+		if (this.hideCursor) {
+			cliCursor.hide(this.stream);
+		}
+
 		this.render();
 		this.id = setInterval(this.render.bind(this), this.interval);
 		text && (this.text = text);
 
 		return this;
 	}
+
 	stop() {
-		if (!this.enabled) {
+		if (!this.isEnabled) {
 			return this;
 		}
 
@@ -83,20 +132,32 @@ class Ora {
 		this.id = null;
 		this.frameIndex = 0;
 		this.clear();
-		cliCursor.show(this.stream);
+		if (this.hideCursor) {
+			cliCursor.show(this.stream);
+		}
 
 		return this;
 	}
+
 	succeed(text) {
-		return this.stopAndPersist(logSymbols.success, text);
+		return this.stopAndPersist({symbol: logSymbols.success, text});
 	}
+
 	fail(text) {
-		return this.stopAndPersist(logSymbols.error, text);
+		return this.stopAndPersist({symbol: logSymbols.error, text});
 	}
-	stopAndPersist(symbol, text) {
+
+	warn(text) {
+		return this.stopAndPersist({symbol: logSymbols.warning, text});
+	}
+
+	info(text) {
+		return this.stopAndPersist({symbol: logSymbols.info, text});
+	}
+
+	stopAndPersist(options = {}) {
 		this.stop();
-		text && (this.text = text);
-		this.stream.write(`${symbol || ' '} ${this.text}\n`);
+		this.stream.write(`${options.symbol || ' '} ${options.text || this.text}\n`);
 
 		return this;
 	}
@@ -108,7 +169,7 @@ module.exports = function (opts) {
 
 module.exports.promise = (action, options) => {
 	if (typeof action.then !== 'function') {
-		throw new Error('Parameter `action` must be a Promise');
+		throw new TypeError('Parameter `action` must be a Promise');
 	}
 
 	const spinner = new Ora(options);

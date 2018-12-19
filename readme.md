@@ -2,7 +2,11 @@
 
 > Elegant terminal spinner
 
-<img src="screenshot.gif" width="629">
+<p align="center">
+	<br>
+	<img src="screenshot.svg" width="500">
+	<br>
+</p>
 
 ## Modifications
 
@@ -16,6 +20,10 @@ This has been modified from the original version.  The following changes have be
 ```
 $ npm install --save @geek/spinner
 ```
+
+<a href="https://www.patreon.com/sindresorhus">
+	<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
+</a>
 
 
 ## Usage
@@ -34,15 +42,13 @@ setTimeout(() => {
 
 ## API
 
-It will gracefully not do anything when there's no TTY or when in a CI.
-
 ### Spinner([options|text])
 
 If a string is provided, it is treated as a shortcut for [`options.text`](#text).
 
 #### options
 
-Type: `object`
+Type: `Object`
 
 ##### text
 
@@ -52,10 +58,10 @@ Text to display after the spinner.
 
 ##### spinner
 
-Type: `string` `object`<br>
+Type: `string` `Object`<br>
 Default: `dots` <img src="screenshot-spinner.gif" width="14">
 
-Name of one of the [provided spinners](https://github.com/sindresorhus/cli-spinners/blob/master/spinners.json). See `example.js` in this repo if you want to test out different spinners.
+Name of one of the [provided spinners](https://github.com/sindresorhus/cli-spinners/blob/master/spinners.json). See `example.js` in this repo if you want to test out different spinners. On Windows, it will always use the `line` spinner as the Windows command-line doesn't have proper Unicode support.
 
 Or an object like:
 
@@ -73,6 +79,13 @@ Default: `cyan`<br>
 Values: `black` `red` `green` `yellow` `blue` `magenta` `cyan` `white` `gray`
 
 Color of the spinner.
+
+##### hideCursor
+
+Type: `boolean`<br>
+Default: `true`
+
+Set to `false` to stop Ora from hiding the cursor.
 
 ##### interval
 
@@ -92,34 +105,65 @@ Stream to write the output.
 
 You could for example set this to `process.stdout` instead.
 
-##### enabled
+##### isEnabled
 
-Type: `boolean`<br>
-Default: `false`
+Type: `boolean`
 
-Force enabling of the spinner regardless of the `stream` not being run inside a TTY context and/or in a CI environment.
+Force enable/disable the spinner. If not specified, the spinner will be enabled if the `stream` is being run inside a TTY context (not spawned or piped) and/or not in a CI environment.
+
+Note that `{isEnabled: false}` doesn't mean it won't output anything. It just means it won't output the spinner, colors, and other ansi escape codes. It will still log text.
 
 ### Instance
 
 #### .start([text])
 
-Start the spinner. Returns the instance.
+Start the spinner. Returns the instance. Set the current text if `text` is provided.
 
 #### .stop([text])
 
 Stop and clear the spinner. Returns the instance.
 
-### .succeed([text])
+#### .succeed([text])
 
-Stop the spinner, change it to a green `✔` and persist the `text`. Returns the instance. See the GIF below.
+Stop the spinner, change it to a green `✔` and persist the current text, or `text` if provided. Returns the instance. See the GIF below.
 
-### .fail([text])
+#### .fail([text])
 
-Stop the spinner, change it to a red `✖` and persist the `text`. Returns the instance. See the GIF below.
+Stop the spinner, change it to a red `✖` and persist the current text, or `text` if provided. Returns the instance. See the GIF below.
 
-### .stopAndPersist([symbol], [text])
+#### .warn([text])
 
-Stop the spinner, change it to `symbol` (or `' '` if `symbol` is not provided) and persist the `text`. Returns the instance. See the GIF below.
+Stop the spinner, change it to a yellow `⚠` and persist the current text, or `text` if provided. Returns the instance.
+
+#### .info([text])
+
+Stop the spinner, change it to a blue `ℹ` and persist the current text, or `text` if provided. Returns the instance.
+
+#### .isSpinning
+
+A boolean of whether the instance is currently spinning.
+
+#### .stopAndPersist([options])
+
+Stop the spinner and change the symbol or text. Returns the instance. See the GIF below.
+
+##### options
+
+Type: `Object`
+
+###### symbol
+
+Type: `string`<br>
+Default: `' '`
+
+Symbol to replace the spinner with.
+
+###### text
+
+Type: `string`<br>
+Default: Current text
+
+Text to be persisted.
 
 <img src="screenshot-2.gif" width="480">
 
@@ -143,11 +187,11 @@ Change the text.
 
 Change the spinner color.
 
-#### .promise(action, [options|text])
+### ora.promise(action, [options|text])
 
 Starts a spinner for a promise. The spinner is stopped with `.succeed()` if the promise fulfills or with `.fail()` if it rejects. Returns the spinner instance.
 
-##### action
+#### action
 
 Type: `Promise`
 
@@ -160,6 +204,12 @@ Indent the spinner.
 - [ora](https://github.com/sindresorhus/ora) - Elegant terminal spinner (upstream for this project)
 - [cli-spinners](https://github.com/sindresorhus/cli-spinners) - Spinners for use in the terminal
 - [listr](https://github.com/SamVerschueren/listr) - Terminal task list
+- [CLISpinner](https://github.com/kiliankoe/CLISpinner) - Terminal spinner library for Swift
+- [halo](https://github.com/ManrajGrover/halo) - Python port
+- [spinners](https://github.com/FGRibreau/spinners) - Terminal spinners for Rust
+- [marquee-ora](https://github.com/joeycozza/marquee-ora) - Scrolling marquee spinner for Ora
+- [briandowns/spinner](https://github.com/briandowns/spinner) - Terminal spinner/progress indicator for Go
+- [tj/go-spin](https://github.com/tj/go-spin) - Terminal spinner package for Go
 
 
 ## License
