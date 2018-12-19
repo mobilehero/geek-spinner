@@ -19,7 +19,8 @@ class Ora {
 		this.options = Object.assign({
 			text: '',
 			color: 'cyan',
-			stream: process.stderr
+			stream: process.stderr,
+			defaultIndentLength: 4,
 		}, options);
 
 		const sp = this.options.spinner;
@@ -36,6 +37,7 @@ class Ora {
 		this.id = null;
 		this.frameIndex = 0;
 		this.indent = 0;
+		this.defaultIndentLength = this.options.defaultIndentLength;
 		this.isEnabled = typeof this.options.isEnabled === 'boolean' ? this.options.isEnabled : ((this.stream && this.stream.isTTY) && !process.env.CI);
 
 		this.text = this.options.text;
@@ -159,6 +161,13 @@ class Ora {
 		this.stop();
 		this.stream.write(`${options.symbol || ' '} ${options.text || this.text}\n`);
 
+		return this;
+	}
+
+	stopAndIndent(options = {}) {
+		this.indent += this.defaultIndentLength;
+		this.stopAndPersist(options);
+		this.indent -= this.defaultIndentLength;
 		return this;
 	}
 }

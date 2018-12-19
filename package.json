@@ -1,7 +1,7 @@
 {
   "name": "@geek/spinner",
-  "version": "3.0.0-revision.0",
-  "description": "terminal spinner - fork of sindresorhus/ora ",
+  "version": "3.0.0-1",
+  "description": "terminal spinner - enhanced fork of sindresorhus/ora ",
   "license": "MIT",
   "repository": "mobilehero/geek-spinner",
   "author": {
@@ -10,11 +10,12 @@
     "url": "sindresorhus.com"
   },
   "contributors": [
-  {
-    "name": "Brenton House",
-    "email": "brenton.house@gmail.com",
-    "url": "https://github.com/brentonhouse"
-  }],
+    {
+      "name": "Brenton House",
+      "email": "brenton.house@gmail.com",
+      "url": "https://github.com/brentonhouse"
+    }
+  ],
   "engines": {
     "node": ">=6"
   },
