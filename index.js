@@ -164,6 +164,22 @@ class Ora {
 		return this;
 	}
 
+	succeedAndIndent(text) {
+		return this.stopAndIndent({symbol: logSymbols.success, text});
+	}
+
+	failAndIndent(text) {
+		return this.stopAndIndent({symbol: logSymbols.error, text});
+	}
+
+	warnAndIndent(text) {
+		return this.stopAndIndent({symbol: logSymbols.warning, text});
+	}
+
+	infoAndIndent(text) {
+		return this.stopAndIndent({symbol: logSymbols.info, text});
+	}
+
 	stopAndIndent(options = {}) {
 		this.indent += this.defaultIndentLength;
 		this.stopAndPersist(options);
