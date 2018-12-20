@@ -1,6 +1,6 @@
 {
   "name": "@geek/spinner",
-  "version": "3.0.0-2",
+  "version": "3.0.0-3",
   "description": "terminal spinner - enhanced fork of sindresorhus/ora ",
   "license": "MIT",
   "repository": "mobilehero/geek-spinner",

@@ -125,6 +125,13 @@ class Ora {
 		return this;
 	}
 
+	startAndIndent(text) {
+		this.indent += this.defaultIndentLength;
+		this.start(text);
+		this.indent -= this.defaultIndentLength;
+		return this;
+	}
+
 	stop() {
 		if (!this.isEnabled) {
 			return this;
