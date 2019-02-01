@@ -1,7 +1,7 @@
 
 # @geek/spinner
 
-> Geeky Command-Line Spinner Utility
+> Geeky Terminal Spinner Utility
 
 <img src="screenshot.gif" width="629">
 
