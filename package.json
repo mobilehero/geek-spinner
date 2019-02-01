@@ -1,6 +1,6 @@
 {
   "name": "@geek/spinner",
-  "version": "3.0.0-3",
+  "version": "0.4.1",
   "description": "terminal spinner - enhanced fork of sindresorhus/ora ",
   "license": "MIT",
   "repository": "mobilehero/geek-spinner",
@@ -51,6 +51,8 @@
   },
   "devDependencies": {
     "ava": "^1.0.0-rc.2",
+    "eslint-plugin-jsdoc": "^4.1.0",
+    "eslint-plugin-promise": "^4.0.1",
     "get-stream": "^4.1.0",
     "xo": "^0.23.0"
   }

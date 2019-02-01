@@ -5,23 +5,21 @@ const cliSpinners = require('cli-spinners');
 const logSymbols = require('log-symbols');
 const stripAnsi = require('strip-ansi');
 const wcwidth = require('wcwidth');
-
-const TEXT = Symbol('text');
+const figures = require('figures');
 
 class Ora {
 	constructor(options) {
 		if (typeof options === 'string') {
-			options = {
-				text: options
-			};
+			options = { text: options  };
 		}
 
 		this.options = Object.assign({
-			text: '',
-			color: 'cyan',
+			text:   '',
+			color:  'cyan',
 			stream: process.stderr,
-			defaultIndentLength: 4,
 		}, options);
+
+		this.baseIndent = this.options.baseIndent || 0;
 
 		const sp = this.options.spinner;
 		this.spinner = typeof sp === 'object' ? sp : (process.platform === 'win32' ? cliSpinners.line : (cliSpinners[sp] || cliSpinners.dots)); // eslint-disable-line no-nested-ternary
@@ -30,39 +28,17 @@ class Ora {
 			throw new Error('Spinner must define `frames`');
 		}
 
+		this.text = this.options.text;
 		this.color = this.options.color;
-		this.hideCursor = this.options.hideCursor !== false;
 		this.interval = this.options.interval || this.spinner.interval || 100;
 		this.stream = this.options.stream;
 		this.id = null;
 		this.frameIndex = 0;
-		this.indent = 0;
-		this.defaultIndentLength = this.options.defaultIndentLength;
-		this.isEnabled = typeof this.options.isEnabled === 'boolean' ? this.options.isEnabled : ((this.stream && this.stream.isTTY) && !process.env.CI);
-
-		this.text = this.options.text;
-		// Set *after* `this.stream`
-		this.linesToClear = 0;
+		this.indent = this.baseIndent;
+		this.enabled = this.options.enabled || ((this.stream && this.stream.isTTY) && !process.env.CI);
 	}
-
-	get text() {
-		return this[TEXT];
-	}
-
-	get isSpinning() {
-		return this.id !== null;
-	}
-
-	set text(value) {
-		this[TEXT] = value;
-		const columns = this.stream.columns || 80;
-		this.lineCount = stripAnsi('--' + value).split('\n').reduce((count, line) => {
-			return count + Math.max(1, Math.ceil(wcwidth(line) / columns));
-		}, 0);
-	}
-
 	frame() {
-		const {frames} = this.spinner;
+		const { frames } = this.spinner;
 		let frame = frames[this.frameIndex];
 
 		if (this.color) {
@@ -71,127 +47,74 @@ class Ora {
 
 		this.frameIndex = ++this.frameIndex % frames.length;
 
-		return frame + ' ' + this.text;
+		return `${frame} ${this.text}`;
 	}
-
 	clear() {
-		if (!this.isEnabled || !this.stream.isTTY) {
+		if (!this.enabled) {
 			return this;
 		}
 
-		for (let i = 0; i < this.linesToClear; i++) {
-			if (i > 0) {
-				this.stream.moveCursor(0, -1);
-			}
-			this.stream.clearLine();
-			this.stream.cursorTo(this.indent);
-		}
-		this.linesToClear = 0;
-		this.stream.cursorTo(this.indent);
+		this.stream.clearLine();
+		this.stream.cursorTo(parseInt(this.indent) * 4);
 
 		return this;
 	}
-
 	render() {
 		this.clear();
 		this.stream.write(this.frame());
-		this.linesToClear = this.lineCount;
 
 		return this;
 	}
-
-	start(text) {
-		if (text) {
-			this.text = text;
-		}
-
-		if (!this.isEnabled) {
-			this.stream.write(`- ${this.text}\n`);
+	start(text, indent) {
+		if (!this.enabled || this.id) {
 			return this;
 		}
 
-		if (this.isSpinning) {
-			return this;
-		}
+		indent && (this.indent = indent);
 
-		if (this.hideCursor) {
-			cliCursor.hide(this.stream);
-		}
-
+		cliCursor.hide(this.stream);
 		this.render();
 		this.id = setInterval(this.render.bind(this), this.interval);
 		text && (this.text = text);
 
 		return this;
 	}
-
-	startAndIndent(text) {
-		this.indent += this.defaultIndentLength;
-		this.start(text);
-		this.indent -= this.defaultIndentLength;
-		return this;
-	}
-
-	stop() {
-		if (!this.isEnabled) {
+	stop(symbol, text, indent) {
+		if (!this.enabled) {
 			return this;
 		}
 
+		indent && (this.indent = indent);
 		clearInterval(this.id);
 		this.id = null;
 		this.frameIndex = 0;
 		this.clear();
-		if (this.hideCursor) {
-			cliCursor.show(this.stream);
-		}
+		cliCursor.show(this.stream);
 
+		text && (this.text = text);
+		this.stream.write(`${symbol || ' '} ${this.text}\n`);
+
+		this.indent = this.baseIndent;
 		return this;
 	}
-
-	succeed(text) {
-		return this.stopAndPersist({symbol: logSymbols.success, text});
+	succeed(text, indent) {
+		return this.stop(logSymbols.success, text, indent);
 	}
-
-	fail(text) {
-		return this.stopAndPersist({symbol: logSymbols.error, text});
+	fail(text, indent) {
+		return this.stop(logSymbols.error, text, indent);
 	}
-
-	warn(text) {
-		return this.stopAndPersist({symbol: logSymbols.warning, text});
+	info(text, indent) {
+		return this.stop(figures.arrowRight, text, indent);
 	}
-
-	info(text) {
-		return this.stopAndPersist({symbol: logSymbols.info, text});
+	note(text, indent) {
+		!text && (text = this.text);
+		text = chalk.gray(text);
+		return this.stop(figures.pointerSmall, text, indent);
 	}
-
-	stopAndPersist(options = {}) {
-		this.stop();
-		this.stream.write(`${options.symbol || ' '} ${options.text || this.text}\n`);
-
-		return this;
-	}
-
-	succeedAndIndent(text) {
-		return this.stopAndIndent({symbol: logSymbols.success, text});
-	}
-
-	failAndIndent(text) {
-		return this.stopAndIndent({symbol: logSymbols.error, text});
-	}
-
-	warnAndIndent(text) {
-		return this.stopAndIndent({symbol: logSymbols.warning, text});
-	}
-
-	infoAndIndent(text) {
-		return this.stopAndIndent({symbol: logSymbols.info, text});
-	}
-
-	stopAndIndent(options = {}) {
-		this.indent += this.defaultIndentLength;
-		this.stopAndPersist(options);
-		this.indent -= this.defaultIndentLength;
-		return this;
+	skip(text, indent) {
+		!text && (text = this.text);
+		text += chalk.gray(' [skipped]');
+		return this.stop(chalk.yellow(figures.cross), text, indent);
 	}
 }
 
@@ -201,7 +124,7 @@ module.exports = function (opts) {
 
 module.exports.promise = (action, options) => {
 	if (typeof action.then !== 'function') {
-		throw new TypeError('Parameter `action` must be a Promise');
+		throw new Error('Parameter `action` must be a Promise');
 	}
 
 	const spinner = new Ora(options);
