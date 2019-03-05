@@ -1,59 +1,62 @@
 {
-  "name": "@geek/spinner",
-  "version": "0.4.1",
-  "description": "Geeky Terminal Spinner Utility",
-  "license": "MIT",
-  "repository": "mobilehero/geek-spinner",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "contributors": [
-    {
-      "name": "Brenton House",
-      "email": "brenton.house@gmail.com",
-      "url": "https://github.com/brentonhouse"
-    }
-  ],
-  "engines": {
-    "node": ">=6"
-  },
-  "scripts": {
-    "test": "xo && ava"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "cli",
-    "spinner",
-    "spinners",
-    "terminal",
-    "term",
-    "console",
-    "ascii",
-    "unicode",
-    "loading",
-    "indicator",
-    "progress",
-    "busy",
-    "wait",
-    "idle"
-  ],
-  "dependencies": {
-    "chalk": "^2.3.1",
-    "cli-cursor": "^2.1.0",
-    "cli-spinners": "^1.1.0",
-    "log-symbols": "^2.2.0",
-    "strip-ansi": "^5.0.0",
-    "wcwidth": "^1.0.1"
-  },
-  "devDependencies": {
-    "ava": "^1.0.0-rc.2",
-    "eslint-plugin-jsdoc": "^4.1.0",
-    "eslint-plugin-promise": "^4.0.1",
-    "get-stream": "^4.1.0",
-    "xo": "^0.23.0"
-  }
+	"name": "@geek/spinner",
+	"version": "1.0.0",
+	"description": "Geeky Terminal Spinner Utility",
+	"license": "MIT",
+	"repository": "mobilehero/geek-spinner",
+	"author": {
+		"name": "Brenton House",
+		"email": "brenton.house@gmail.com",
+		"url": "https://brenton.house"
+	},
+	"contributors": [ {
+		"name": "Brenton House",
+		"email": "brenton.house@gmail.com",
+		"url": "https://brenton.house"
+	}, {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	} ],
+	"engines": {
+		"node": ">=6"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"cli",
+		"spinner",
+		"spinners",
+		"terminal",
+		"term",
+		"console",
+		"ascii",
+		"unicode",
+		"loading",
+		"indicator",
+		"progress",
+		"busy",
+		"wait",
+		"idle"
+	],
+	"dependencies": {
+		"chalk": "^2.3.1",
+		"cli-cursor": "^2.1.0",
+		"cli-spinners": "^1.1.0",
+		"figures": "^2.0.0",
+		"log-symbols": "^2.2.0",
+		"strip-ansi": "^5.0.0",
+		"wcwidth": "^1.0.1"
+	},
+	"devDependencies": {
+		"ava": "^1.0.0-rc.2",
+		"eslint-plugin-jsdoc": "^4.1.0",
+		"eslint-plugin-promise": "^4.0.1",
+		"get-stream": "^4.1.0",
+		"xo": "^0.23.0"
+	}
 }

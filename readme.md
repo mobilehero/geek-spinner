@@ -117,6 +117,9 @@ Stop the spinner, change it to a green `✔` and persist the `text`. Returns the
 
 Stop the spinner, change it to a red `✖` and persist the `text`. Returns the instance. See the GIF below.
 
+### .note([text])
+
+
 ### .stopAndPersist([symbol], [text])
 
 Stop the spinner, change it to `symbol` (or `' '` if `symbol` is not provided) and persist the `text`. Returns the instance. See the GIF below.
