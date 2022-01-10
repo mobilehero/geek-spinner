@@ -1,28 +1,35 @@
 {
 	"name": "@geek/spinner",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Geeky Terminal Spinner Utility",
 	"license": "MIT",
 	"repository": "mobilehero/geek-spinner",
 	"author": {
 		"name": "Brenton House",
-		"email": "brenton.house@gmail.com",
 		"url": "https://brenton.house"
 	},
-	"contributors": [ {
-		"name": "Brenton House",
-		"email": "brenton.house@gmail.com",
-		"url": "https://brenton.house"
-	}, {
-		"name": "Sindre Sorhus",
-		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
-	} ],
+	"contributors": [
+		{
+			"name": "Brenton House",
+			"url": "https://brenton.house"
+		},
+		{
+			"name": "Sindre Sorhus",
+			"email": "sindresorhus@gmail.com",
+			"url": "sindresorhus.com"
+		}
+	],
 	"engines": {
 		"node": ">=6"
 	},
 	"scripts": {
-		"test": "xo && ava"
+		"test2": "xo && ava",
+		"lint": "eslint . --fix",
+		"list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
+		"prep": "npm install --ignore-scripts",
+		"test": "npm run prep",
+		"prepublishOnly": "git pull && npm test && bump insane",
+		"prepublishOnly2": "git pull && npm test && npm audit fix && bump insane"
 	},
 	"files": [
 		"index.js"
@@ -41,22 +48,24 @@
 		"progress",
 		"busy",
 		"wait",
-		"idle"
+		"idle",
+		"brenton-house"
 	],
 	"dependencies": {
-		"chalk": "^2.3.1",
-		"cli-cursor": "^2.1.0",
-		"cli-spinners": "^1.1.0",
-		"figures": "^2.0.0",
-		"log-symbols": "^2.2.0",
-		"strip-ansi": "^5.0.0",
+		"chalk": "^5.0.0",
+		"cli-cursor": "^4.0.0",
+		"cli-spinners": "^2.6.1",
+		"figures": "^4.0.0",
+		"log-symbols": "^5.1.0",
+		"strip-ansi": "^7.0.1",
 		"wcwidth": "^1.0.1"
 	},
 	"devDependencies": {
-		"ava": "^1.0.0-rc.2",
-		"eslint-plugin-jsdoc": "^4.1.0",
-		"eslint-plugin-promise": "^4.0.1",
-		"get-stream": "^4.1.0",
-		"xo": "^0.23.0"
+		"ava": "^4.0.1",
+		"eslint": "^8.6.0",
+		"eslint-plugin-jsdoc": "^37.6.1",
+		"eslint-plugin-promise": "^6.0.0",
+		"get-stream": "^6.0.1",
+		"xo": "^0.47.0"
 	}
 }

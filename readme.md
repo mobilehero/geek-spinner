@@ -3,6 +3,16 @@
 
 > Geeky Terminal Spinner Utility
 
+
+[![@geek/spinner version](https://img.shields.io/npm/v/@geek/spinner.png)](https://www.npmjs.com/package/@geek/spinner)
+[![@geek/spinner downloads](https://img.shields.io/npm/dm/@geek/spinner.svg)](https://www.npmjs.com/package/@geek/spinner)
+[![@geek/spinner dependencies](https://img.shields.io/librariesio/release/npm/@geek/spinner.svg)](https://www.npmjs.com/package/@geek/tuspinnerrbo)
+
+
+
+
+
+
 <img src="screenshot.gif" width="629">
 
 ## Install
@@ -115,10 +125,15 @@ Stop the spinner, change it to a green `✔` and persist the `text`. Returns the
 
 ### .fail([text])
 
-Stop the spinner, change it to a red `✖` and persist the `text`. Returns the instance. See the GIF below.
+Stop the spinner, change it to a `✖` and persist the `text`. Returns the instance. See the GIF below.
+
+### .info([text])
+
+Stop the spinner, change it to a `›` and persist the `text`. Returns the instance. See the GIF below.
 
 ### .note([text])
 
+Stop the spinner, change it to a red `›` and persist the `text`. Returns the instance. See the GIF below.
 
 ### .stopAndPersist([symbol], [text])
 
